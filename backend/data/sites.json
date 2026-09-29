@@ -1,0 +1,291 @@
+[
+  {
+    "site_id": "grasslands-lakeside",
+    "project_name": "Grasslands Lakeside",
+    "developer_name": "Grasslands Developers",
+    "live_url": "/generated/grasslands-lakeside/index.html",
+    "preview_url": "/generated/grasslands-lakeside/index.html",
+    "status": "live",
+    "created_at": "2026-09-29T06:26:44.806Z",
+    "updated_at": "2026-09-29T06:46:37.123Z"
+  },
+  {
+    "site_id": "rohan-marina-one",
+    "project_name": "Rohan Marina One",
+    "developer_name": "Rohan",
+    "live_url": "/generated/rohan-marina-one/index.html",
+    "preview_url": "/generated/rohan-marina-one/index.html",
+    "status": "live",
+    "updated_at": "2026-09-29T04:33:24.235Z"
+  },
+  {
+    "site_id": "isprava-estate-fonteira",
+    "project_name": "Isprava Estate Fonteira",
+    "developer_name": "Isprava Vaddo Hospitality & Developments",
+    "live_url": "/generated/isprava-estate-fonteira/index.html",
+    "preview_url": "/generated/isprava-estate-fonteira/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T11:56:37.228Z",
+    "updated_at": "2026-09-28T11:56:37.228Z"
+  },
+  {
+    "site_id": "marina-one",
+    "project_name": "Marina One",
+    "developer_name": "Puravankara Ltd & Sobha Ltd",
+    "live_url": "/generated/marina-one/index.html",
+    "preview_url": "/generated/marina-one/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T11:13:52.710Z",
+    "updated_at": "2026-09-28T11:13:52.710Z"
+  },
+  {
+    "site_id": "prestige-parklane",
+    "project_name": "Prestige Parklane",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/prestige-parklane/index.html",
+    "preview_url": "/generated/prestige-parklane/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T11:13:52.710Z",
+    "updated_at": "2026-09-28T11:13:52.710Z"
+  },
+  {
+    "site_id": "land-trades-shivabagh",
+    "project_name": "Land Trades Shivabagh",
+    "developer_name": "Land Trades Builders & Developers",
+    "live_url": "/generated/land-trades-shivabagh/index.html",
+    "preview_url": "/generated/land-trades-shivabagh/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T10:21:36.219Z",
+    "updated_at": "2026-09-28T10:21:36.219Z"
+  },
+  {
+    "site_id": "luxury-residences",
+    "project_name": "Luxury Residences",
+    "developer_name": "Premier Developer",
+    "live_url": "/generated/luxury-residences/index.html",
+    "preview_url": "/generated/luxury-residences/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T09:49:45.669Z",
+    "updated_at": "2026-09-29T06:44:50.914Z"
+  },
+  {
+    "site_id": "dlf-one-midtown",
+    "project_name": "DLF One Midtown",
+    "developer_name": "DLF Home Developers Ltd",
+    "live_url": "/generated/dlf-one-midtown/index.html",
+    "preview_url": "/generated/dlf-one-midtown/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T09:47:37.128Z",
+    "updated_at": "2026-09-28T09:47:37.128Z"
+  },
+  {
+    "site_id": "dlf-one-midtown-developer",
+    "project_name": "DLF One Midtown\n- Developer",
+    "developer_name": "DLF Home Developers Ltd",
+    "live_url": "/generated/dlf-one-midtown-developer/index.html",
+    "preview_url": "/generated/dlf-one-midtown-developer/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T09:45:07.382Z",
+    "updated_at": "2026-09-28T09:45:09.974Z"
+  },
+  {
+    "site_id": "build-a-complete",
+    "project_name": "Build a complete",
+    "developer_name": "s Limited",
+    "live_url": "/generated/build-a-complete/index.html",
+    "preview_url": "/generated/build-a-complete/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T07:26:32.005Z",
+    "updated_at": "2026-09-28T09:42:21.938Z"
+  },
+  {
+    "site_id": "godrej-avenue-eleven",
+    "project_name": "Godrej Avenue Eleven",
+    "developer_name": "Godrej Properties",
+    "live_url": "/generated/godrej-avenue-eleven/index.html",
+    "preview_url": "/generated/godrej-avenue-eleven/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T07:01:23.569Z",
+    "updated_at": "2026-09-28T07:01:23.569Z"
+  },
+  {
+    "site_id": "prestige-raintree-park",
+    "project_name": "Prestige Raintree Park",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/prestige-raintree-park/index.html",
+    "preview_url": "/generated/prestige-raintree-park/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T06:28:14.738Z",
+    "updated_at": "2026-09-28T06:28:18.932Z"
+  },
+  {
+    "site_id": "binghatti-hills",
+    "project_name": "Binghatti Hills",
+    "developer_name": "Binghatti Developers (Dubai, UAE)",
+    "live_url": "/generated/binghatti-hills/index.html",
+    "preview_url": "/generated/binghatti-hills/index.html",
+    "status": "live",
+    "created_at": "2026-09-28T05:17:51.891Z",
+    "updated_at": "2026-09-28T05:32:25.770Z"
+  },
+  {
+    "site_id": "godrej-aristocrat",
+    "project_name": "Godrej Aristocrat",
+    "developer_name": "",
+    "live_url": "/generated/godrej-aristocrat/index.html",
+    "preview_url": "/generated/godrej-aristocrat/index.html",
+    "status": "live",
+    "created_at": "2026-09-26T07:02:20.612Z",
+    "updated_at": "2026-09-26T07:04:13.328Z"
+  },
+  {
+    "site_id": "create-a-new-luxury-landing-pag",
+    "project_name": "Create a new luxury landing pag",
+    "developer_name": "DLF Limited",
+    "live_url": "/generated/create-a-new-luxury-landing-pag/index.html",
+    "preview_url": "/generated/create-a-new-luxury-landing-pag/index.html",
+    "status": "live",
+    "created_at": "2026-09-26T04:48:15.408Z",
+    "updated_at": "2026-09-26T04:48:15.408Z"
+  },
+  {
+    "site_id": "sattva-city",
+    "project_name": "Sattva City",
+    "developer_name": "Sattva Group",
+    "live_url": "/generated/sattva-city/index.html",
+    "preview_url": "/generated/sattva-city/index.html",
+    "status": "live",
+    "created_at": "2026-09-25T09:15:20.663Z",
+    "updated_at": "2026-09-25T10:04:52.116Z"
+  },
+  {
+    "site_id": "test-phase-demo-1790325462256",
+    "project_name": "Sattva Horizon",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/test-phase-demo-1790325462256/index.html",
+    "preview_url": "/generated/test-phase-demo-1790325462256/index.html",
+    "status": "live",
+    "created_at": "2026-09-25T08:38:18.895Z",
+    "updated_at": "2026-09-25T08:38:47.758Z"
+  },
+  {
+    "site_id": "godrej-woodscapes",
+    "project_name": "Godrej Woodscapes",
+    "developer_name": "Godrej Properties",
+    "live_url": "/generated/godrej-woodscapes/index.html",
+    "preview_url": "/generated/godrej-woodscapes/index.html",
+    "status": "live",
+    "created_at": "2026-09-25T07:54:24.108Z",
+    "updated_at": "2026-09-28T07:20:55.405Z"
+  },
+  {
+    "site_id": "test-residences",
+    "project_name": "Test Residences",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/test-residences/index.html",
+    "preview_url": "/generated/test-residences/index.html",
+    "status": "live",
+    "created_at": "2026-09-25T06:51:34.542Z",
+    "updated_at": "2026-09-25T06:51:34.542Z"
+  },
+  {
+    "site_id": "test-luxury-residence",
+    "project_name": "Test Luxury Residence",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/test-luxury-residence/index.html",
+    "preview_url": "/generated/test-luxury-residence/index.html",
+    "status": "live",
+    "created_at": "2026-09-25T04:12:54.201Z",
+    "updated_at": "2026-09-25T04:12:54.201Z"
+  },
+  {
+    "site_id": "justflip",
+    "project_name": "Justflip",
+    "developer_name": "Justflip Technologies",
+    "live_url": "/generated/justflip/index.html",
+    "preview_url": "/generated/justflip/index.html",
+    "status": "live",
+    "created_at": "2026-09-23T09:00:00.000Z",
+    "updated_at": "2026-09-23T09:00:00.000Z"
+  },
+  {
+    "site_id": "sattva-lumina-auto-test",
+    "project_name": "Sattva Lumina Auto Test",
+    "developer_name": "Sattva Group",
+    "live_url": "/generated/sattva-lumina-auto-test/index.html",
+    "preview_url": "/generated/sattva-lumina-auto-test/index.html",
+    "status": "live",
+    "created_at": "2026-09-23T07:21:55.921Z",
+    "updated_at": "2026-09-23T07:21:55.921Z"
+  },
+  {
+    "site_id": "prestige-parklane-ai-test",
+    "project_name": "Prestige Parklane AI Test",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/prestige-parklane-ai-test/index.html",
+    "preview_url": "/generated/prestige-parklane-ai-test/index.html",
+    "status": "live",
+    "created_at": "2026-09-23T07:21:55.846Z",
+    "updated_at": "2026-09-23T07:21:55.846Z"
+  },
+  {
+    "site_id": "test-prestige",
+    "project_name": "Test Prestige",
+    "developer_name": "Prestige Group",
+    "live_url": "/generated/test-prestige/index.html",
+    "preview_url": "/generated/test-prestige/index.html",
+    "status": "live",
+    "created_at": "2026-09-23T07:06:30.885Z",
+    "updated_at": "2026-09-23T07:06:30.885Z"
+  },
+  {
+    "site_id": "anand-markanthony",
+    "project_name": "anand markanthony",
+    "developer_name": "gap Group",
+    "live_url": "/generated/anand-markanthony/index.html",
+    "preview_url": "/generated/anand-markanthony/index.html",
+    "status": "live",
+    "created_at": "2026-09-23T05:09:24.519Z",
+    "updated_at": "2026-09-23T05:09:24.519Z"
+  },
+  {
+    "site_id": "godrej-woods",
+    "project_name": "Godrej Woods",
+    "developer_name": "Godrej Properties",
+    "live_url": "/generated/godrej-woods/index.html",
+    "preview_url": "/generated/godrej-woods/index.html",
+    "status": "live",
+    "created_at": "2026-09-23T04:25:11.983Z",
+    "updated_at": "2026-09-23T07:15:44.187Z"
+  },
+  {
+    "site_id": "mark-parklane",
+    "project_name": "MARK Parklane",
+    "developer_name": "HINDU Group",
+    "live_url": "/generated/mark-parklane/index.html",
+    "preview_url": "/generated/mark-parklane/index.html",
+    "status": "live",
+    "created_at": "2026-09-22T07:52:59.839Z",
+    "updated_at": "2026-09-22T07:52:59.839Z"
+  },
+  {
+    "site_id": "sobha-dream-acres",
+    "project_name": "Sobha Dream Acres",
+    "developer_name": "Sobha Developers",
+    "live_url": "/generated/sobha-dream-acres/index.html",
+    "preview_url": "/generated/sobha-dream-acres/index.html",
+    "status": "live",
+    "created_at": "2026-09-22T07:12:38.024Z",
+    "updated_at": "2026-09-22T07:12:38.024Z"
+  },
+  {
+    "site_id": "anand-parklane",
+    "project_name": "anand Parklane",
+    "developer_name": "anand Group",
+    "live_url": "/generated/anand-parklane/index.html",
+    "preview_url": "/generated/anand-parklane/index.html",
+    "status": "live",
+    "created_at": "2026-09-22T06:44:54.558Z",
+    "updated_at": "2026-09-22T06:46:21.859Z"
+  }
+]

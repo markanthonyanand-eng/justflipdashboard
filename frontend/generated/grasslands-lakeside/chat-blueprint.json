@@ -1,0 +1,204 @@
+{
+  "slug": "grasslands-lakeside",
+  "projectName": "Grasslands Lakeside",
+  "developerName": "Grasslands Developers",
+  "location": "Manipal Hill",
+  "selectedThemeKey": "coastal-azure",
+  "brandTheme": "coastal-azure",
+  "theme": {
+    "primaryColor": "#082F49",
+    "secondaryColor": "#0C4A6E",
+    "accentColor": "#38BDF8",
+    "backgroundColor": "#F0F9FF",
+    "textColor": "#0F172A",
+    "surfaceColor": "#E0F2FE"
+  },
+  "fontStyle": "inter",
+  "price": "₹5.18 Cr*",
+  "startingPrice": "₹5.18 Cr*",
+  "price1bhk": "₹5.18 Cr*",
+  "price2bhk": "₹84 Lakh* Onwards",
+  "price3bhk": "₹84 Lakh* Onwards",
+  "totalLand": "10.83 Acres",
+  "towers": "2 Iconic Sky Towers",
+  "elevation": "Palatial Coastal High-Rise",
+  "totalUnits": "750 Luxury Units & Sky Villas",
+  "greenery": "70",
+  "clubhouseSize": "35,000 Sq. Ft. \"Club Serene\"",
+  "configurationsText": "2, 3 & 4 BHK Luxury Suites",
+  "projectStatus": "Under Construction & Limited New Launch",
+  "phone": "+91 98450 82465",
+  "whatsapp": "919845082465",
+  "reraId": "Approved",
+  "heroEyebrow": "⭐ EXCLUSIVE LUXURY LIVING IN KOCHI",
+  "heroHeadline": "Grasslands Lakeside, Manipal",
+  "heroSubtitle": "An exclusive residential enclave in Manipal Hill, Adjacent to Manipal Lake, Manipal, Karnataka 576104 featuring panoramic views, signature clubhouse, and world-class amenities.",
+  "editorialStory": "Rising gracefully in Manipal Hill, Adjacent to Manipal Lake, Manipal, Karnataka 576104, Grasslands Lakeside redefines architectural luxury in Kochi. Developed by Grasslands Developers, this landmark enclave balances pristine biophilic landscaping with world-class residential comforts.\n\nEvery home is crafted with oversized viewing balconies, cross-ventilating breezy layouts, and premium specifications designed for discerning families and global investors.\n\nLife revolves around an exclusive lifestyle clubhouse featuring resort swimming pools, wellness spa pavilions, sports arenas, and 24/7 five-tier security for absolute peace of mind.",
+  "amenities": [
+    "Direct Private Access Gate (0 km)",
+    "End Point Eco Park & Valley View: 8 Mins (3.4 km)",
+    "Inox Cinemas & Canara Mall: 10 Mins (4.5 km)",
+    "WORLD-CLASS AMENITIES (4 SIGNATURE CLUBS):",
+    "Olympic-Length Swimming Pool",
+    "Indoor Squash Court",
+    "High-Tech Gymnasium & Aerobics"
+  ],
+  "commute": [
+    {
+      "name": "MAHE Campus & MIT Manipal",
+      "time": "5 Mins (2.2 km)"
+    },
+    {
+      "name": "Kasturba Medical College (KMC) & Hospital",
+      "time": "6 Mins (2.8 km)"
+    },
+    {
+      "name": "Tiger Circle & Manipal Commercial Hub",
+      "time": "7 Mins (3.1 km)"
+    },
+    {
+      "name": "TAPMI (T. A. Pai Management Institute)",
+      "time": "8 Mins (3.9 km)"
+    },
+    {
+      "name": "Udupi Railway Station (Indrali)",
+      "time": "8 Mins (3.5 km)"
+    },
+    {
+      "name": "NH 66 Coastal Expressway (Kochi - Panvel)",
+      "time": "12 Mins (6.2 km)"
+    },
+    {
+      "name": "Udupi Sri Krishna Matha / City Center",
+      "time": "14 Mins (7.0 km)"
+    },
+    {
+      "name": "Malpe Beach & Sea Walk",
+      "time": "22 Mins (13.5 km)"
+    },
+    {
+      "name": "Mangalore International Airport (IXE)",
+      "time": "55 Mins (58 km)"
+    },
+    {
+      "name": "1.9 km Manipal Lake Promenade",
+      "time": "Direct Private Access Gate (0 km)"
+    },
+    {
+      "name": "End Point Eco Park & Valley View",
+      "time": "8 Mins (3.4 km)"
+    },
+    {
+      "name": "Inox Cinemas & Canara Mall",
+      "time": "10 Mins (4.5 km)"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is the exact location and RERA approval for Grasslands Lakeside?",
+      "answer": "Grasslands Lakeside is nestled at Manipal Hill, Adjacent to Manipal Lake, Manipal, Karnataka 576104. It is registered under state RERA registration number Approved."
+    },
+    {
+      "question": "What configurations and starting prices are available?",
+      "answer": "Grasslands Lakeside features 2, 3 & 4 BHK Luxury Suites starting from ₹84 Lakh* Onwards."
+    },
+    {
+      "question": "What signature amenities and recreational facilities are provided?",
+      "answer": "Residents enjoy Direct Private Access Gate (0 km), End Point Eco Park & Valley View: 8 Mins (3.4 km), Inox Cinemas & Canara Mall: 10 Mins (4.5 km), and WORLD-CLASS AMENITIES (4 SIGNATURE CLUBS):."
+    },
+    {
+      "question": "Who is the developer and promoter on record?",
+      "answer": "Grasslands Lakeside is developed by Grasslands Developers, a premier builder known for quality architectural engineering and transparent escrow compliance."
+    }
+  ],
+  "typologies": [
+    {
+      "name": "2 BHK Luxury Sky Suite",
+      "area": "2,125 sq.ft.",
+      "carpet": "1,520 sq.ft.",
+      "price": "₹5.18 Cr* Onwards",
+      "description": "Private entrance foyer, Italian marble, and ocean-facing sundeck."
+    },
+    {
+      "name": "3 BHK Royal Residence",
+      "area": "2,745 sq.ft.",
+      "carpet": "1,960 sq.ft.",
+      "price": "₹84 Lakh* Onwards",
+      "description": "Dual-aspect balconies, en-suite bedrooms, and maid quarters."
+    },
+    {
+      "name": "4 BHK Imperial Penthouse",
+      "area": "3,350 sq.ft.",
+      "carpet": "2,420 sq.ft.",
+      "price": "₹84 Lakh* Onwards",
+      "description": "3-side open layout, double-height living, and private terrace provision."
+    }
+  ],
+  "status": "built",
+  "updatedAt": "2026-09-29T06:46:37.120Z",
+  "heroImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+  "galleryImages": [
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-evening.jpg"
+  ],
+  "overviewImages": [
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg"
+  ],
+  "brochureImage1": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/brochure-cover.jpg",
+  "brochureImage2": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/brochure-plans-cover.jpg",
+  "brochureImage3": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg",
+  "locationMapImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/location-map.jpg",
+  "greenBannerImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+  "tourBackgroundImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+  "gal1": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg",
+  "gal2": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+  "gal3": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+  "gal4": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg",
+  "gal5": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg",
+  "gal6": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-evening.jpg",
+  "lifeAtImages": [
+    {
+      "title": "The Grand Clubhouse",
+      "cat": "Wellness & Social",
+      "desc": "A ~34,500 sq ft double-height private social sanctum with temperature-controlled indoor pool and lounge.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg"
+    },
+    {
+      "title": "Olympic-Length Swimming Pool",
+      "cat": "Waterfront Living",
+      "desc": "Resort-grade infinity swimming pool flanked by palm trees, sun decks, and submerged loungers.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg"
+    },
+    {
+      "title": "Botanical Central Boulevard",
+      "cat": "Biophilic Greens",
+      "desc": "Over 75% curated open biophilic spaces, tranquil walking paths, reflexology trails, and meditation nooks.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg"
+    },
+    {
+      "title": "World-Class Sports Arenas",
+      "cat": "Active Fitness",
+      "desc": "Full-sized floodlit tennis courts, squash courts, multi-sport turf, and dedicated jogging circuits.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg"
+    },
+    {
+      "title": "Sunken Poolside Cabana Bar",
+      "cat": "Evening Leisure",
+      "desc": "Evening illumination overlooking tranquil water bodies, fountain plazas, and private party decks.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-evening.jpg"
+    },
+    {
+      "title": "Kids Adventure Play Grove",
+      "cat": "Family & Recreation",
+      "desc": "Zero-vehicular movement kids adventure play park with soft-fall surfaces, sandpits, and treehouse.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg"
+    }
+  ]
+}

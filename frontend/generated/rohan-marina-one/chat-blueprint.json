@@ -1,0 +1,132 @@
+{
+  "slug": "rohan-marina-one",
+  "projectName": "Rohan Marina One",
+  "developerName": "Rohan",
+  "location": "NITK Beach Road, Surathkal, Mangaluru 575014, Karnataka",
+  "reraId": "PRM/KA/RERA/1257/334/PR/180625/007850",
+  "status": "built",
+  "selectedThemeKey": "coastal-azure",
+  "brandTheme": "coastal-azure",
+  "theme": {
+    "primaryColor": "#082F49",
+    "secondaryColor": "#0C4A6E",
+    "accentColor": "#38BDF8",
+    "backgroundColor": "#F0F9FF",
+    "textColor": "#0F172A",
+    "surfaceColor": "#E0F2FE"
+  },
+  "fontStyle": "playfair-montserrat",
+  "heroEyebrow": "⭐ 100% UNINTERRUPTED ARABIAN SEA SKY RESIDENCES",
+  "heroHeadline": "Rohan Marina One — Palatial Oceanfront Sky Suites on NITK Beach Road, Surathkal",
+  "heroSubtitle": "An iconic 8.28-acre oceanfront landmark rising up to 46 storeys. Featuring 433 all-sea-facing residences, a 50,000 sq.ft. beachfront club, and a managed 5-star hospitality rental model delivering 8%–11% net yields.",
+  "price": "₹2.97 Cr*",
+  "startingPrice": "₹2.97 Cr*",
+  "price1bhk": "₹2.97 Cr*",
+  "price2bhk": "₹3.84 Cr*",
+  "price3bhk": "₹4.69 Cr*",
+  "totalLand": "8.28 Acres (85% Coastal Greens)",
+  "towers": "2 Iconic Coastal Towers (39 & 46 Storeys)",
+  "elevation": "46 Storeys Architectural Landmark",
+  "totalUnits": "433 All-Sea-Facing Palatial Residences",
+  "greenery": "85% Biophilic Greens & Resort Landscaping",
+  "clubhouseSize": "50,000 sq.ft. 5-Star Beach Club & Spa",
+  "configurationsText": "2, 3 & 4 BHK All-Sea-Facing Sky Suites",
+  "projectStatus": "Under Construction (Possession Dec 2030)",
+  "phone": "+91 98450 82465",
+  "whatsapp": "919845444555",
+  "editorialStory": "Redefining India’s coastal skyline, Rohan Marina One rises majestically as a dual-tower icon along the golden shores of Surathkal, Mangaluru. Soaring up to 46 storeys, this 8.28-acre oceanfront masterwork is engineered so that every single residence commands an uninterrupted, 180-degree panorama of the Arabian Sea.\n\nBlending private residential luxury with world-class hospitality, residents enjoy exclusive access to an Olympic-size horizon pool, a 50,000 sq.ft. wellness club, rooftop sky lounges, and a managed hospitality-linked rental model in 'The Resort' tower—perfect for global NRI investors and high-net-worth professionals.\n\nBuilt by Rohan Corporation, a premier real estate leader with over 30 years of impeccable delivery across coastal Karnataka, Marina One offers absolute statutory transparency backed by Karnataka RERA registration PRM/KA/RERA/1257/334/PR/180625/007850 and milestone-linked escrow safety.",
+  "typologies": [
+    {
+      "name": "2 BHK Sea-Facing Sky Suite",
+      "area": "2,125 sq.ft.",
+      "carpet": "1,520 sq.ft.",
+      "price": "₹2.97 Cr* Onwards",
+      "description": "180° unobstructed Arabian Sea balcony, Italian marble flooring, private entrance foyer, and cross-ventilating sea breeze."
+    },
+    {
+      "name": "3 BHK Royal Coastal Residence",
+      "area": "2,745 - 2,850 sq.ft.",
+      "carpet": "1,960 sq.ft.",
+      "price": "₹3.84 Cr* Onwards",
+      "description": "Dual-aspect oceanfront living room, maid quarters with separate access, and palatial master deck with sunset vistas."
+    },
+    {
+      "name": "4 BHK Imperial Sky Manor",
+      "area": "3,350 sq.ft.",
+      "carpet": "2,420 sq.ft.",
+      "price": "₹4.69 Cr* Onwards",
+      "description": "Private elevator vestibule, double-height sea balcony, expansive entertainment lounge, and private plunge pool provision."
+    }
+  ],
+  "amenities": [
+    "Olympic-Size Horizon Edge Swimming Pool & Kids Splash Park",
+    "50,000 sq.ft. Clubhouse with International Spa & Hydrotherapy",
+    "46th-Floor Rooftop Sky Lounge & Stargazing Observatory",
+    "Professional Squash Court & Indoor Badminton Arena",
+    "High-Street Retail Plaza & Oceanfront Fine Dining Promenade",
+    "100% DG Power Backup for Full Residential AC Loads",
+    "5-Tier Biometric & AI Video Surveillance Security",
+    "Dedicated EV Charging Bay for Every Parking Slot"
+  ],
+  "commute": [
+    {
+      "name": "NITK Surathkal Campus & English Medium School",
+      "time": "2 Mins / 800 m"
+    },
+    {
+      "name": "NITK Beach & Historic Surathkal Lighthouse",
+      "time": "3 Mins / 1.2 km"
+    },
+    {
+      "name": "NH 66 (Kochi–Panvel Coastal Highway)",
+      "time": "2 Mins / 900 m"
+    },
+    {
+      "name": "Surathkal Railway Station (Konkan Railway Hub)",
+      "time": "4 Mins / 1.8 km"
+    },
+    {
+      "name": "Srinivas Institute of Medical Sciences & Hospital (Mukka)",
+      "time": "6 Mins / 3.5 km"
+    },
+    {
+      "name": "Baikampady Industrial Hub & MRPL",
+      "time": "8 - 10 Mins / 6 km"
+    },
+    {
+      "name": "New Mangalore Port Trust (NMPT)",
+      "time": "12 Mins / 8.2 km"
+    },
+    {
+      "name": "Mangalore Central CBD / City Centre Mall",
+      "time": "18 Mins / 14 km"
+    },
+    {
+      "name": "Mangalore International Airport (IXE)",
+      "time": "22 Mins / 16.5 km"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is the exact location and Karnataka RERA registration for Rohan Marina One?",
+      "answer": "Rohan Marina One is located directly on NITK Beach Road in Surathkal, Mangaluru 575014. It is fully approved by Karnataka RERA under registration number PRM/KA/RERA/1257/334/PR/180625/007850."
+    },
+    {
+      "question": "Do all residences have views of the Arabian Sea?",
+      "answer": "Yes. Rohan Marina One is architecturally master-planned as an all-sea-facing coastal enclave where 100% of residences command an unobstructed 180-degree panorama of the Arabian Sea."
+    },
+    {
+      "question": "What is the hospitality-linked ownership model in The Resort tower?",
+      "answer": "Block B (The Resort) offers an optional 5-star managed hospitality leaseback program, generating 8%–11% projected annual net rental yields for homeowners when not in personal use."
+    },
+    {
+      "question": "What are the payment milestones and bank approvals?",
+      "answer": "The project features a transparent 10:80:10 construction-linked payment structure with pre-approvals from leading mortgage lenders including SBI, HDFC Bank, ICICI Bank, and Bank of Baroda."
+    }
+  ],
+  "galleryImages": [
+    "/uploads/1790656395580_test_elevation_facade.png"
+  ],
+  "heroImage": "/uploads/1790656395580_test_elevation_facade.png",
+  "updatedAt": "2026-09-29T04:33:24.231Z"
+}

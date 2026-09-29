@@ -1,0 +1,95 @@
+{
+  "slug": "prestige-parklane",
+  "projectName": "Prestige Parklane",
+  "developerName": "Prestige Group",
+  "location": "KIADB Aerospace Park · Devanahalli, Bengaluru",
+  "reraId": "PRM/KA/RERA/1251/309/PR/150926/008941",
+  "status": "built",
+  "theme": {
+    "primaryColor": "#0C2340",
+    "secondaryColor": "#C5A059",
+    "accentColor": "#F5D061",
+    "backgroundColor": "#FFFFFF",
+    "textColor": "#0F172A",
+    "surfaceColor": "#F8FAFC"
+  },
+  "brandTheme": "navy-gold",
+  "fontStyle": "playfair-montserrat",
+  "price": "₹1.85 Cr*",
+  "startingPrice": "₹1.85 Cr*",
+  "price1bhk": "₹1.85 Cr*",
+  "price2bhk": "On Request*",
+  "price3bhk": "On Request*",
+  "totalLand": "11.76 Acres",
+  "towers": "9 Towers",
+  "elevation": "3B + G + 24 Floors",
+  "totalUnits": "1,788 Apartments",
+  "greenery": "75% Open & Green Space",
+  "clubhouseSize": "~34,500 sq ft Signature Clubhouse",
+  "configurationsText": "1, 2 & 3 BHK Luxury Suites",
+  "projectStatus": "New Launch (Phase 1)",
+  "phone": "+91 93423 33197",
+  "whatsapp": "917411662228",
+  "heroEyebrow": "⭐ EXCLUSIVE PRE-LAUNCH IN NORTH BENGALURU",
+  "heroHeadline": "Prestige Parklane — Luxury High-Rise Living in Aerospace Park",
+  "heroSubtitle": "Master-planned luxury residential enclave with open green panoramas, signature clubhouse, and direct aerospace tech corridor connectivity.",
+  "editorialStory": "Experience refined architectural luxury in North Bengaluru, engineered for biophilic tranquility and strategic connectivity across Devanahalli and Kempegowda International Airport.\n\nSet across 11.76 acres with 75% dedicated to landscaped gardens, tree-lined avenues, and active sports courts, Prestige Parklane provides the ultimate balance of urban vibrancy and quiet sanctuary.\n\nBacked by Prestige Group’s legacy of landmark deliveries and comprehensive Karnataka RERA approvals, each residence is designed with maximum natural light, cross ventilation, and contemporary architectural finishes.",
+  "amenities": [
+    "Olympic-Length Lap Pool & Sun Deck",
+    "Indoor Squash Courts & Badminton Arena",
+    "~34,500 sq ft Signature Clubhouse",
+    "Championship Tennis & Pickleball Courts",
+    "Biophilic Reflexology Pathways & Gardens",
+    "Fully Equipped TechnoGym Fitness Center"
+  ],
+  "commute": [
+    {
+      "name": "Kempegowda Int'l Airport",
+      "time": "15 mins / 20 km"
+    },
+    {
+      "name": "Aerospace SEZ Gate & IT Corridor",
+      "time": "2 mins / 500 m"
+    },
+    {
+      "name": "Manyata Tech Park",
+      "time": "20 mins / 18 km"
+    },
+    {
+      "name": "Hebbal Flyover & North Gate",
+      "time": "25 mins / 22 km"
+    }
+  ],
+  "typologies": [
+    {
+      "name": "1 BHK Luxury Suite",
+      "area": "567 - 571 sq ft",
+      "carpet": "323 sq ft",
+      "price": "₹1.85 Cr* Onwards"
+    },
+    {
+      "name": "2 BHK Premium Residence",
+      "area": "828 - 880 sq ft",
+      "carpet": "512 sq ft",
+      "price": "₹2.35 Cr*"
+    },
+    {
+      "name": "3 BHK Royal Residence",
+      "area": "1,445 - 1,469 sq ft",
+      "carpet": "915 sq ft",
+      "price": "₹3.10 Cr*"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is the RERA registration number for Prestige Parklane?",
+      "answer": "Prestige Parklane is registered with Karnataka RERA under registration number PRM/KA/RERA/1251/309/PR/150926/008941."
+    },
+    {
+      "question": "Where is Prestige Parklane located?",
+      "answer": "The project is situated in KIADB Aerospace Park, Devanahalli, North Bengaluru, right next to the hardware and aerospace SEZs and just 15 minutes from Kempegowda International Airport."
+    }
+  ],
+  "updatedAt": "2026-09-29T05:36:31.150Z",
+  "heroImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg"
+}

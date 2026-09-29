@@ -1,0 +1,125 @@
+{
+  "slug": "luxury-residences",
+  "projectName": "Luxury Residences",
+  "developerName": "Premier Developer",
+  "location": "New Delhi",
+  "selectedThemeKey": "coastal-azure",
+  "brandTheme": "coastal-azure",
+  "theme": {
+    "primaryColor": "#082F49",
+    "secondaryColor": "#0C4A6E",
+    "accentColor": "#38BDF8",
+    "backgroundColor": "#F0F9FF",
+    "textColor": "#0F172A",
+    "surfaceColor": "#E0F2FE"
+  },
+  "fontStyle": "playfair-montserrat",
+  "price": "Price on Request*",
+  "startingPrice": "Price on Request*",
+  "price1bhk": "Price on Request*",
+  "price2bhk": "Price on Request*",
+  "price3bhk": "Price on Request*",
+  "totalLand": "5.5 Acres",
+  "towers": "2 Iconic Sky Towers",
+  "elevation": "Palatial Coastal High-Rise",
+  "totalUnits": "Exclusive Luxury Residences",
+  "greenery": "80% Open Greens & Landscaping",
+  "clubhouseSize": "Grand Lifestyle Club & Spa Pavilion",
+  "configurationsText": "2, 3 & 4 BHK Luxury Suites",
+  "projectStatus": "Under Construction & Limited New Launch",
+  "phone": "+91 98450 82465",
+  "whatsapp": "919845082465",
+  "reraId": "PRM/KA/RERA/1257/334/PR/180625/007850",
+  "heroEyebrow": "⭐ EXCLUSIVE LUXURY LIVING IN NEW DELHI",
+  "heroHeadline": "Luxury Residences — Coastal Luxury & Master-Planned Living",
+  "heroSubtitle": "An exclusive residential enclave in New Delhi featuring panoramic views, signature clubhouse, and world-class amenities.",
+  "editorialStory": "Rising gracefully in New Delhi, Luxury Residences redefines architectural luxury in New Delhi. Developed by Premier Developer, this landmark enclave balances pristine biophilic landscaping with world-class residential comforts.\n\nEvery home is crafted with oversized viewing balconies, cross-ventilating breezy layouts, and premium specifications designed for discerning families and global investors.\n\nLife revolves around an exclusive lifestyle clubhouse featuring resort swimming pools, wellness spa pavilions, sports arenas, and 24/7 five-tier security for absolute peace of mind.",
+  "amenities": [
+    "Olympic-Length Swimming Pool & Sunken Cabanas",
+    "50,000 sq.ft. Multi-Level Clubhouse & Spa Pavilion",
+    "Rooftop Sky Lounge & Panoramic Viewing Observatory",
+    "Indoor Squash & Badminton Arena",
+    "100% DG Power Backup for Full Residential Load",
+    "5-Tier Biometric & AI Video Surveillance Security"
+  ],
+  "commute": [
+    {
+      "name": "NH 66 Coastal Express Corridor",
+      "time": "2 Mins"
+    },
+    {
+      "name": "Transit & Railway Hub",
+      "time": "5 Mins"
+    },
+    {
+      "name": "City Centre & Commercial CBD",
+      "time": "15 Mins"
+    },
+    {
+      "name": "International Airport Corridor",
+      "time": "20 Mins"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is the exact location and RERA approval for Luxury Residences?",
+      "answer": "Luxury Residences is nestled at New Delhi. It is registered under state RERA registration number PRM/KA/RERA/1257/334/PR/180625/007850."
+    },
+    {
+      "question": "What configurations and starting prices are available?",
+      "answer": "Luxury Residences features 2, 3 & 4 BHK Luxury Suites starting from Price on Request*."
+    },
+    {
+      "question": "What signature amenities and recreational facilities are provided?",
+      "answer": "Residents enjoy Olympic-Length Swimming Pool & Sunken Cabanas, 50,000 sq.ft. Multi-Level Clubhouse & Spa Pavilion, Rooftop Sky Lounge & Panoramic Viewing Observatory, and Indoor Squash & Badminton Arena."
+    },
+    {
+      "question": "Who is the developer and promoter on record?",
+      "answer": "Luxury Residences is developed by Premier Developer, a premier builder known for quality architectural engineering and transparent escrow compliance."
+    }
+  ],
+  "typologies": [
+    {
+      "name": "2 BHK Luxury Sky Suite",
+      "area": "2,125 sq.ft.",
+      "carpet": "1,520 sq.ft.",
+      "price": "Price on Request*",
+      "description": "Private entrance foyer, Italian marble, and ocean-facing sundeck."
+    },
+    {
+      "name": "3 BHK Royal Residence",
+      "area": "2,745 sq.ft.",
+      "carpet": "1,960 sq.ft.",
+      "price": "Price on Request*",
+      "description": "Dual-aspect balconies, en-suite bedrooms, and maid quarters."
+    },
+    {
+      "name": "4 BHK Imperial Penthouse",
+      "area": "3,350 sq.ft.",
+      "carpet": "2,420 sq.ft.",
+      "price": "Price on Request*",
+      "description": "3-side open layout, double-height living, and private terrace provision."
+    }
+  ],
+  "status": "built",
+  "updatedAt": "2026-09-29T06:44:50.864Z",
+  "galleryImages": [
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200"
+  ],
+  "heroImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
+  "overviewImages": [
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200"
+  ],
+  "gal1": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
+  "brochureImage1": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+  "gal2": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+  "brochureImage2": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200",
+  "gal3": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200",
+  "floorPlanImages": [
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200"
+  ]
+}
