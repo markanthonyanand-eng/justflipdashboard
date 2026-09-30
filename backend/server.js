@@ -17,6 +17,7 @@ const SITES_FILE = path.join(DATA_DIR, 'sites.json');
 const SUPABASE_SQL_FILE = path.join(DATA_DIR, 'supabase_schema.sql');
 const GENERATED_DIR = path.join(PUBLIC_DIR, 'generated');
 const SKILL_PATH = 'C:\\Users\\Lenovo\\.gemini\\config\\skills\\LandingPageAgent\\SKILL.md';
+const activeLandingPageStagingPaths = new Set();
 
 function getCodingAgentConfig() {
   const provider = (process.env.JUSTFLIP_CODING_AGENT_PROVIDER || 'opencode').trim().toLowerCase();
@@ -312,6 +313,337 @@ function getSkillInstructions() {
   return `You are LandingPageAgent: Master real estate landing page architect. Generate a complete, production-ready, mobile-responsive single-page landing page in HTML5 with Tailwind CSS CDN and vanilla JS. Include all standard 18 sections: sticky topbar, hero with form, quick facts scale grid, narrative, specs table, brochure teaser, dynamic pricing matrix, location commute hub, statement break, RERA badges, tabbed floor plans, amenities, photo gallery, virtual tour, master plan, technical specs, developer heritage, and site visit booking form with FAQs.`;
 }
 
+function isFullPageDesignPrompt(message) {
+  const text = String(message || '');
+  return text.length >= 1200
+    && /(?:create|build|generate|design).{0,120}landing\s+page/i.test(text)
+    && /(?:design\s+direction|visual\s+direction|colou?r\s+(?:system|palette)|typography)/i.test(text);
+}
+
+function resolveDesignBriefLocation(designBrief, dashboardLocation) {
+  const opening = String(designBrief || '').split(/[\n.]/, 1)[0];
+  const locationMatch = opening.match(/\b(Gurugram|Gurgaon|New Delhi|Delhi|Noida|Bengaluru|Bangalore|Manipal|Udupi|Mangalore|Mangaluru|Mumbai|Pune|Hyderabad|Chennai|Kochi|Dubai)\b/i);
+  if (!locationMatch) return dashboardLocation || '';
+  const requestedCity = locationMatch[1];
+  const currentLocation = String(dashboardLocation || '');
+  if (currentLocation && new RegExp(requestedCity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(currentLocation)) {
+    return currentLocation;
+  }
+  return /gurgaon/i.test(requestedCity) ? 'Gurugram' : requestedCity;
+}
+
+function locationConflictForText(requestedLocation, sourceText) {
+  const location = String(requestedLocation || '').toLowerCase();
+  const text = String(sourceText || '');
+  const bengaluruEvidence = /\b(?:bengaluru|bangalore|north bengaluru|devanahalli|kempegowda|aerospace park)\b|prestige-parklane-bangalore/i;
+  if (/gurugram|gurgaon/.test(location)
+    && (bengaluruEvidence.test(text) || /\bkarnataka\b|PRM\/KA\/RERA/i.test(text))) {
+    return 'Bengaluru-specific facts or media';
+  }
+  if (/manipal|udupi/.test(location) && bengaluruEvidence.test(text)) {
+    return 'Bengaluru-specific facts or media';
+  }
+  if (/bengaluru|bangalore/.test(location)
+    && /\b(?:gurugram|gurgaon|haryana)\b|HRERA|HARERA/i.test(text)) {
+    return 'Gurugram-specific facts or media';
+  }
+  return '';
+}
+
+function findDashboardLocationConflict(designBrief, projectFacts) {
+  const requestedLocation = resolveDesignBriefLocation(designBrief, '');
+  if (!requestedLocation || !projectFacts || typeof projectFacts !== 'object') return '';
+  const locationFieldPattern = /location|map|coordinate|commute|rera|hero|story|image|gallery|brochure|tour|banner|phone|whatsapp|faq/i;
+  const locationFacts = Object.entries(projectFacts)
+    .filter(([key]) => locationFieldPattern.test(key))
+    .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
+    .join('\n');
+  return locationConflictForText(requestedLocation, locationFacts);
+}
+
+function extractSelfContainedBriefProjectFacts(designBrief) {
+  const text = String(designBrief || '');
+  const readLine = pattern => {
+    const match = text.match(pattern);
+    return match ? match[1].trim().replace(/^["'“”]+|["'“”]+$/g, '') : '';
+  };
+  const projectName = readLine(/^\s*[•*-]?\s*Project\s+Name\s*:\s*([^\r\n]+)/im);
+  const developerName = readLine(/^\s*[•*-]?\s*Developer(?:\s*\/\s*Promoter)?\s*:\s*([^\r\n]+)/im)
+    || readLine(/^\s*[•*-]?\s*Legal\s+Entity\s*:\s*([^\r\n]+)/im);
+  const location = readLine(/^\s*[•*-]?\s*(?:Micro-Market\s+Location|Site\s+Location|Location)\s*:\s*([^\r\n]+)/im);
+  const reraId = readLine(/^\s*[•*-]?\s*(?:Official\s+)?RERA(?:\s+Registration)?(?:\s+No\.?|\s+Number)?\s*:\s*([^\r\n]+)/im);
+  const sanctioningAuthority = readLine(/^\s*[•*-]?\s*Sanction\s+Authority\s*:\s*([^\r\n]+)/im);
+  const possessionTimeline = readLine(/^\s*[•*-]?\s*Possession\s+Timeline\s*:\s*([^\r\n]+)/im);
+  const landExtent = readLine(/^\s*[•*-]?\s*Land\s+Extent\s*:\s*([^\r\n]+)/im);
+  const openSpace = readLine(/^\s*[•*-]?\s*Open\s+Space\s+Ratio\s*:\s*([^\r\n]+)/im);
+  const towerStature = readLine(/^\s*[•*-]?\s*Architectural\s+Stature\s*:\s*([^\r\n]+)/im);
+  const totalResidences = readLine(/^\s*[•*-]?\s*Total\s+Residences\s*:\s*([^\r\n]+)/im);
+  const startingPrice = readLine(/^\s*[•*-]?\s*Starting\s+Price\s+Callout\s*:\s*([^\r\n]+)/im);
+  const configuration = readLine(/^\s*[•*-]?\s*Typologies\s*:\s*([^\r\n]+)/im);
+
+  const factCount = [reraId, sanctioningAuthority, possessionTimeline, landExtent, openSpace, towerStature, totalResidences, startingPrice, configuration]
+    .filter(Boolean).length;
+  const explicitlyFictional = /\b(?:fictional|imaginary|not a real (?:property|project)|design demonstration only)\b/i.test(text);
+  if (projectName && developerName && location && explicitlyFictional) {
+    return {
+      projectName,
+      developerName: developerName.replace(/^fictional concept by\s*/i, '').trim() || developerName,
+      location,
+      projectStatus: 'Fictional design concept; not a real or registered property',
+      startingPrice: readLine(/^\s*[•*-]?\s*Price\s*:\s*([^\r\n]+)/im) || 'On Request',
+      reraStatus: 'Not applicable — fictional concept',
+      configuration: 'Details on request',
+      factsSource: 'Explicitly fictional concept brief; no real project facts or dashboard media'
+    };
+  }
+  if (!projectName || !developerName || !location || factCount < 4) return null;
+
+  return {
+    projectName,
+    developerName,
+    location,
+    legalEntity: readLine(/^\s*[•*-]?\s*Legal\s+Entity\s*:\s*([^\r\n]+)/im),
+    reraId,
+    sanctioningAuthority,
+    possessionTimeline,
+    landExtent,
+    openSpace,
+    towerStature,
+    totalResidences,
+    startingPrice,
+    configuration,
+    factsSource: 'Complete project specifications in the current user brief'
+  };
+}
+
+function sanitizeDashboardFacts(value, key = '') {
+  if (/(?:api.?key|token|secret|password|authorization|engineMode)/i.test(key)) return undefined;
+  if (typeof value === 'string') {
+    if (/^data:image\//i.test(value)) return '[Image uploaded in the studio]';
+    return value.length > 20000 ? `${value.slice(0, 20000)}…[truncated]` : value;
+  }
+  if (Array.isArray(value)) return value.map(item => sanitizeDashboardFacts(item)).filter(item => item !== undefined);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value)
+      .map(([childKey, childValue]) => [childKey, sanitizeDashboardFacts(childValue, childKey)])
+      .filter(([, childValue]) => childValue !== undefined));
+  }
+  return value;
+}
+
+function validateOpenCodeLandingPage(html, designBrief, projectName, projectFacts = {}) {
+  const bodyMatch = typeof html === 'string' ? html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i) : null;
+  const bodyText = bodyMatch
+    ? bodyMatch[1]
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<!--[^]*?-->/g, '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+    : '';
+  const styleOpenCount = typeof html === 'string' ? (html.match(/<style\b/gi) || []).length : 0;
+  const styleCloseCount = typeof html === 'string' ? (html.match(/<\/style>/gi) || []).length : 0;
+  const scriptOpenCount = typeof html === 'string' ? (html.match(/<script\b/gi) || []).length : 0;
+  const scriptCloseCount = typeof html === 'string' ? (html.match(/<\/script>/gi) || []).length : 0;
+
+  if (typeof html !== 'string' || html.length < 2000 || !/<!doctype\s+html/i.test(html)
+    || !/<html\b/i.test(html) || !/<head\b[^>]*>[\s\S]*?<\/head>/i.test(html)
+    || !bodyMatch || bodyText.length < 100 || !/<\/html>\s*$/i.test(html)
+    || styleOpenCount !== styleCloseCount || scriptOpenCount !== scriptCloseCount) {
+    throw new Error('OpenCode did not produce a complete HTML landing page.');
+  }
+  const normalizedProjectName = String(projectName || '').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const normalizedBodyText = bodyText.normalize('NFKC').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (normalizedProjectName && !normalizedBodyText.includes(normalizedProjectName)) {
+    throw new Error(`OpenCode output does not identify the requested project "${projectName}".`);
+  }
+  const expectedDeveloper = String(projectFacts?.developerName || '').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (expectedDeveloper && !normalizedBodyText.includes(expectedDeveloper)) {
+    throw new Error(`OpenCode output does not identify the requested developer "${projectFacts.developerName}".`);
+  }
+  const expectedRera = String(projectFacts?.reraId || '').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (expectedRera && !normalizedBodyText.includes(expectedRera)) {
+    throw new Error('OpenCode output omitted the project RERA number supplied in the authoritative facts.');
+  }
+  const requestedLocation = resolveDesignBriefLocation(designBrief, '');
+  const locationConflict = locationConflictForText(requestedLocation, html);
+  if (locationConflict) {
+    throw new Error(`OpenCode output includes ${locationConflict} although the brief requests ${requestedLocation}.`);
+  }
+  const promptLead = String(designBrief || '').trim().slice(0, 100);
+  if (promptLead.length >= 60 && html.toLowerCase().includes(promptLead.toLowerCase())) {
+    throw new Error('OpenCode copied the design prompt into the page instead of applying it.');
+  }
+  const requestedColors = [...new Set(String(designBrief || '').match(/#[0-9a-f]{6}\b/gi) || [])];
+  const missingColors = requestedColors.filter(color => !html.toLowerCase().includes(color.toLowerCase()));
+  if (missingColors.length > 0) {
+    throw new Error(`OpenCode output omitted requested palette colors: ${missingColors.join(', ')}.`);
+  }
+  return true;
+}
+
+async function generateLandingPageWithOpenCode(options) {
+  const stagingKey = path.resolve(options.stagingPath);
+  if (activeLandingPageStagingPaths.has(stagingKey)) {
+    throw new Error('A landing page request for this project is already running. Wait for it to finish before trying again.');
+  }
+  activeLandingPageStagingPaths.add(stagingKey);
+  try {
+    return await generateLandingPageWithOpenCodeTask(options);
+  } finally {
+    activeLandingPageStagingPaths.delete(stagingKey);
+  }
+}
+
+async function generateLandingPageWithOpenCodeTask({ projectName, projectFacts, projectFactsSource = 'dashboard', designBrief, request, sourcePath, stagingPath }) {
+  if (!fs.existsSync(SKILL_PATH)) throw new Error(`Required LandingPageAgent skill file was not found: ${SKILL_PATH}`);
+  const skillInstructions = getSkillInstructions();
+  if (!skillInstructions.trim()) throw new Error('LandingPageAgent SKILL.md is empty.');
+  const projectFactsAuthority = projectFactsSource === 'brief'
+    ? 'The current user brief contains a complete, named project specification. Treat that specification as the sole factual source for this new project. The dashboard JSON belongs to a different selected project and must be ignored completely; never merge its developer, location, RERA, pricing, contact, map, amenities, or media into this page. Do not stop to ask which source to use.'
+    : 'Use the dashboard JSON as the only source of project facts. Do not invent missing facts; omit them or label them "On Request" / "To be confirmed". Never use a location-specific fact, contact, map, RERA record, brochure, or image that identifies another city or project. Only use media explicitly supplied for this project; if no matching media is available, use a restrained CSS composition instead of borrowing another project’s assets. If the dashboard values conflict with the requested location, stop and report the conflict rather than creating or publishing a mixed-location page.';
+
+  const taskPrompt = `Create or update a complete, production-ready real-estate landing page for ${projectName}.
+
+Treat this as a fresh, standalone task. Ignore design directions and project details from earlier messages in the OpenCode conversation. The project identity must remain "${projectName}"; do not substitute another real-world project. Read and follow the LandingPageAgent skill below as a production checklist. The current user's design brief controls the visual direction and exact palette, even if prior conversation or skill examples use a different theme. Extract useful requirements from the brief; never paste its instructions, examples, or placeholder labels into the visible page. ${projectFactsAuthority}
+
+${sourcePath ? `Use the existing page at "${sourcePath}" as the starting point and apply only this new request: ${request}` : 'Create the page from scratch for this request.'}
+
+Write the finished HTML document to this exact path: "${stagingPath}". Do not edit any other files. The page must include responsive styling and working page interactions. Use the exact colors from the design brief in the actual CSS and keep their assigned roles. Do not substitute a preset theme.
+
+<dashboard_project_data_json>
+${JSON.stringify(projectFacts, null, 2)}
+</dashboard_project_data_json>
+
+<user_design_brief>
+${designBrief}
+</user_design_brief>
+
+<current_request>
+${request}
+</current_request>
+
+<landing_page_agent_skill_md>
+${skillInstructions}
+</landing_page_agent_skill_md>
+
+<completion_contract>
+You must create the staging file using an available file-writing tool. Do not stop after describing the page, printing code in chat, or claiming that the file was written. Before reporting completion, verify that the exact staging path exists, is a complete HTML file, and contains the page you generated.
+</completion_contract>`;
+
+  if (fs.existsSync(stagingPath)) fs.unlinkSync(stagingPath);
+  let stableSince = 0;
+  let lastMtime = 0;
+  let lastValidationError = null;
+  let invalidOutputSince = 0;
+  let invalidOutputMtime = 0;
+  const outputIsStable = () => {
+    if (!fs.existsSync(stagingPath)) {
+      lastValidationError = new Error('OpenCode has not written the landing page file yet.');
+      invalidOutputSince = invalidOutputSince || Date.now();
+      return false;
+    }
+    try {
+      const stat = fs.statSync(stagingPath);
+      const html = fs.readFileSync(stagingPath, 'utf8');
+      validateOpenCodeLandingPage(html, designBrief, projectName, projectFacts);
+      lastValidationError = null;
+      invalidOutputSince = 0;
+      invalidOutputMtime = 0;
+      if (stat.mtimeMs !== lastMtime) {
+        lastMtime = stat.mtimeMs;
+        stableSince = Date.now();
+        return false;
+      }
+      return stableSince > 0 && Date.now() - stableSince >= 2500;
+    } catch (error) {
+      stableSince = 0;
+      lastValidationError = error;
+      try {
+        const mtime = fs.statSync(stagingPath).mtimeMs;
+        if (mtime !== invalidOutputMtime) {
+          invalidOutputMtime = mtime;
+          invalidOutputSince = Date.now();
+        }
+      } catch (_) {
+        invalidOutputSince = invalidOutputSince || Date.now();
+      }
+      return false;
+    }
+  };
+
+  // Full-page builds can exceed fifteen minutes while OpenCode writes and
+  // reviews the HTML. Keep the dashboard request open through longer builds.
+  await runCodingAgent(taskPrompt, process.cwd(), 1500000, outputIsStable, () => ({
+    message: lastValidationError?.message,
+    since: invalidOutputSince
+  }));
+  const html = fs.readFileSync(stagingPath, 'utf8');
+  validateOpenCodeLandingPage(html, designBrief, projectName, projectFacts);
+  return html;
+}
+
+async function generateLandingPageWithGemini({ projectName, projectFacts, projectFactsSource = 'dashboard', designBrief, request, stagingPath, apiKey, preferredModel }) {
+  if (!fs.existsSync(SKILL_PATH)) throw new Error(`Required LandingPageAgent skill file was not found: ${SKILL_PATH}`);
+  const skillInstructions = getSkillInstructions();
+  if (!skillInstructions.trim()) throw new Error('LandingPageAgent SKILL.md is empty.');
+  const authority = projectFactsSource === 'brief'
+    ? 'The current brief contains the complete facts for this new project. Treat those as the sole facts. Ignore dashboard facts from a different selected project.'
+    : 'Use the dashboard JSON as the only source of project facts. Do not invent missing details. Omit them or use “On Request”. Do not use media or facts from a different project or city.';
+  const prompt = `Create a complete, production-ready, responsive single-file HTML landing page for "${projectName}". Follow the LandingPageAgent skill below as a production checklist. Extract its useful requirements; do not show the skill or prompt text in the page. ${authority}
+
+Use the current design brief for visual direction and exact palette. Do not replace its colors with a preset theme. Build a polished page with working interactions, semantic accessible HTML, CSS, and vanilla JavaScript. Return only the complete HTML document, beginning with <!doctype html> and ending with </html>. Do not use markdown fences.
+
+<project_facts_json>\n${JSON.stringify(projectFacts, null, 2)}\n</project_facts_json>
+<design_brief>\n${designBrief}\n</design_brief>
+<specific_request>\n${request}\n</specific_request>
+<landing_page_agent_skill>\n${skillInstructions}\n</landing_page_agent_skill>`;
+  const models = [...new Set([preferredModel || 'gemini-2.5-flash', ...GEMINI_CANDIDATE_MODELS])];
+  if (!apiKey) throw new Error('Connect a Gemini API key before selecting Gemini generation.');
+  const stagingKey = path.resolve(stagingPath);
+  if (activeLandingPageStagingPaths.has(stagingKey)) {
+    throw new Error('A landing page request for this project is already running. Wait for it to finish before trying again.');
+  }
+  activeLandingPageStagingPaths.add(stagingKey);
+  try {
+    for (const model of models) {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+        signal: AbortSignal.timeout(240000),
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.4, maxOutputTokens: 24576 }
+        })
+      });
+      const responseText = await response.text();
+      if (!response.ok) {
+        let detail = responseText;
+        try { detail = JSON.parse(responseText).error?.message || responseText; } catch (_) {}
+        if (response.status === 400 || response.status === 401 || response.status === 403) {
+          throw new Error(`Gemini API error (${response.status}): ${detail}`);
+        }
+        console.warn(`[Gemini page generation] ${model} returned HTTP ${response.status}: ${detail}`);
+        continue;
+      }
+      let data;
+      try { data = JSON.parse(responseText); } catch (_) { throw new Error('Gemini returned an unreadable response.'); }
+      const candidate = data.candidates?.[0];
+      const html = cleanMarkdownHtml(candidate?.content?.parts?.map(part => part.text || '').join('\n') || '');
+      if (!html) throw new Error(candidate?.finishReason === 'MAX_TOKENS'
+        ? 'Gemini reached its output limit before finishing the page. Try a shorter design brief.'
+        : 'Gemini returned no HTML page.');
+      validateOpenCodeLandingPage(html, designBrief, projectName, projectFacts);
+      fs.writeFileSync(stagingPath, html, 'utf8');
+      return html;
+    }
+    throw new Error('Gemini could not generate the page with the available models. Check the API key and model access.');
+  } finally {
+    activeLandingPageStagingPaths.delete(stagingKey);
+  }
+}
+
 function cleanMarkdownHtml(rawText) {
   let text = rawText.trim();
   // Remove markdown code fences ```html and ```
@@ -327,16 +659,129 @@ function cleanMarkdownHtml(rawText) {
   return text.trim();
 }
 
-function runCodingAgent(prompt, cwd, timeoutMs = 600000, isComplete = () => false) {
+function runCodingAgent(prompt, cwd, timeoutMs = 600000, isComplete = () => false, getCompletionDiagnostic = () => null) {
   const agent = getCodingAgentConfig();
-  let args;
-  let useStdin = false;
   if (agent.provider === 'opencode') {
-    args = ['run', '-m', 'google/gemini-2.5-flash', '--auto'];
-    useStdin = true;
-  } else {
-    args = agent.args.map(arg => arg.replace(/\{prompt\}/g, prompt));
+    const serverUrl = (process.env.JUSTFLIP_OPENCODE_SERVER_URL || 'http://127.0.0.1:4096').replace(/\/$/, '');
+    return (async () => {
+      const healthResponse = await fetch(`${serverUrl}/global/health`, { signal: AbortSignal.timeout(1500) });
+      if (!healthResponse.ok) throw new Error(`OpenCode server returned HTTP ${healthResponse.status}.`);
+
+      const directoryQuery = `?directory=${encodeURIComponent(path.resolve(cwd))}`;
+      const statusUrl = `${serverUrl}/session/status${directoryQuery}`;
+      const sessionTitle = String(prompt.split(/\r?\n/, 1)[0] || 'Landing page generation').slice(0, 120);
+      const createResponse = await fetch(`${serverUrl}/session${directoryQuery}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: sessionTitle, agent: 'build' }),
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!createResponse.ok) throw new Error(`OpenCode could not start a fresh task (HTTP ${createResponse.status}).`);
+      const session = await createResponse.json();
+      if (!session?.id) throw new Error('OpenCode created a task without returning its session ID.');
+
+      try {
+        const selectResponse = await fetch(`${serverUrl}/tui/select-session${directoryQuery}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionID: session.id }),
+          signal: AbortSignal.timeout(10000)
+        });
+        if (!selectResponse.ok) {
+          console.warn(`[OpenCode] Could not select session ${session.id} in the TUI (HTTP ${selectResponse.status}); continuing with the new OpenCode session.`);
+        }
+      } catch (error) {
+        console.warn(`[OpenCode] Could not navigate the TUI to session ${session.id}: ${error.message}`);
+      }
+
+      const promptResponse = await fetch(`${serverUrl}/session/${encodeURIComponent(session.id)}/prompt_async${directoryQuery}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ parts: [{ type: 'text', text: prompt }] }),
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!promptResponse.ok) throw new Error(`OpenCode could not start the landing page task (HTTP ${promptResponse.status}).`);
+
+      const readSessionStatuses = async () => {
+        const response = await fetch(statusUrl, { signal: AbortSignal.timeout(10000) });
+        if (!response.ok) throw new Error(`OpenCode session status returned HTTP ${response.status}.`);
+        const statuses = await response.json();
+        if (!statuses || typeof statuses !== 'object' || Array.isArray(statuses)) {
+          throw new Error('OpenCode returned an invalid session status response.');
+        }
+        return statuses;
+      };
+
+      const deadline = Date.now() + timeoutMs;
+      const sessionDetectionDeadline = Date.now() + 30000;
+      let sawSessionBusy = false;
+      let idleSince = 0;
+      let consecutiveStatusTimeouts = 0;
+      let repairPromptSent = false;
+      let waitingForRepairActivity = false;
+      let repairSubmittedAt = 0;
+      while (Date.now() < deadline) {
+        let statuses;
+        try {
+          statuses = await readSessionStatuses();
+          consecutiveStatusTimeouts = 0;
+        } catch (error) {
+          if (error.name !== 'TimeoutError' && error.name !== 'AbortError') throw error;
+          consecutiveStatusTimeouts += 1;
+          if (consecutiveStatusTimeouts >= 6) {
+            throw new Error(`OpenCode task ${session.id} may still be running, but the dashboard could not read its status. Check the OpenCode window before retrying.`);
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          continue;
+        }
+        if (statuses[session.id]?.type === 'busy') {
+          sawSessionBusy = true;
+          idleSince = 0;
+          waitingForRepairActivity = false;
+        } else if (sawSessionBusy) {
+          if (waitingForRepairActivity) {
+            if (isComplete()) return { stdout: `Completed in OpenCode session ${session.id} after a file-write repair.`, stderr: '' };
+            if (Date.now() - repairSubmittedAt >= 30000) {
+              throw new Error(`OpenCode accepted a repair request but did not resume session ${session.id}. Check that session in OpenCode before retrying.`);
+            }
+            await new Promise(resolve => setTimeout(resolve, 500));
+            continue;
+          }
+          idleSince = idleSince || Date.now();
+          if (Date.now() - idleSince >= 2500) {
+            if (isComplete()) return { stdout: `Completed in OpenCode session ${session.id}.`, stderr: '' };
+            const diagnostic = getCompletionDiagnostic();
+            if (diagnostic?.since && Date.now() - diagnostic.since >= 2500) {
+              if (!repairPromptSent) {
+                const repairMessage = `The dashboard checked the filesystem and found that your landing page output is still incomplete: ${diagnostic.message || 'the required HTML file is missing or invalid.'}\n\nResume the original task now. Use an available file-writing tool to create or repair the exact staging file requested in the original prompt. Do not only describe the page or claim it was written. Verify the file exists and is complete before finishing. Do not edit other files.`;
+                const repairResponse = await fetch(`${serverUrl}/session/${encodeURIComponent(session.id)}/prompt_async${directoryQuery}`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ parts: [{ type: 'text', text: repairMessage }] }),
+                  signal: AbortSignal.timeout(15000)
+                });
+                if (!repairResponse.ok) throw new Error(`OpenCode could not start the automatic landing-page repair (HTTP ${repairResponse.status}).`);
+                repairPromptSent = true;
+                waitingForRepairActivity = true;
+                repairSubmittedAt = Date.now();
+                idleSince = 0;
+                continue;
+              }
+              throw new Error(`OpenCode finished without creating a complete landing page after one automatic repair attempt: ${diagnostic.message || 'the HTML structure is invalid.'}`);
+            }
+            if (Date.now() - idleSince >= 10000) {
+              throw new Error('OpenCode finished, but it did not leave a complete landing page file.');
+            }
+          }
+        } else if (Date.now() >= sessionDetectionDeadline) {
+          throw new Error(`The dashboard started OpenCode session ${session.id}, but it never reported as active. Check the OpenCode window before retrying.`);
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      throw new Error(`Connected OpenCode TUI did not finish within ${Math.round(timeoutMs / 1000)} seconds.`);
+    })();
   }
+  const args = agent.args.map(arg => arg.replace(/\{prompt\}/g, prompt));
   return new Promise((resolve, reject) => {
     let settled = false;
     const child = spawn(agent.command, args, {
@@ -346,10 +791,6 @@ function runCodingAgent(prompt, cwd, timeoutMs = 600000, isComplete = () => fals
     });
     let stdout = '';
     let stderr = '';
-    if (useStdin && child.stdin) {
-      child.stdin.write(prompt);
-      child.stdin.end();
-    }
     const timer = setTimeout(() => {
       if (isComplete()) {
         settled = true;
@@ -569,10 +1010,10 @@ async function probeGeminiWithFallback(testKey) {
   let lastErr = '';
   for (const model of GEMINI_CANDIDATE_MODELS) {
     try {
-      const probeUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${testKey}`;
+      const probeUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
       const probeRes = await fetch(probeUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': testKey },
         signal: AbortSignal.timeout(15000),
         body: JSON.stringify({
           contents: [{ parts: [{ text: 'Respond with: PONG' }] }]
@@ -594,7 +1035,10 @@ async function probeGeminiWithFallback(testKey) {
         break;
       }
     } catch (err) {
-      lastErr = err.message;
+      const cause = err.cause;
+      lastErr = cause?.code
+        ? `${cause.code}: ${cause.message || 'network request failed'}`
+        : err.message;
     }
   }
   return { success: false, error: lastErr };
@@ -639,10 +1083,10 @@ ${formData.rawSalesNotes || formData.editorialStory || 'Luxury gated community w
 
   for (const model of modelsToTry) {
     try {
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
       const res = await fetch(geminiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         signal: AbortSignal.timeout(30000),
         body: JSON.stringify({
           system_instruction: { parts: [{ text: systemPrompt }] },
@@ -766,9 +1210,11 @@ ${formData.rawSalesNotes || formData.editorialStory || ''}`;
           if (helpfulMsg.includes('API_KEY_INVALID') || helpfulMsg.includes('API key not valid')) {
             helpfulMsg = 'Invalid API key. Please generate a valid Google Gemini key at https://aistudio.google.com/app/apikey (Google AI Studio keys start with AIzaSy).';
           }
+          const networkFailure = /\bfetch failed\b|\b(?:ENOTFOUND|EAI_AGAIN|ECONNRESET|ETIMEDOUT|ECONNREFUSED|UND_ERR_CONNECT_TIMEOUT)\b|network request failed/i.test(helpfulMsg);
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({
             success: false,
+            code: networkFailure ? 'GEMINI_NETWORK_ERROR' : 'GEMINI_CONNECTION_ERROR',
             message: helpfulMsg
           }));
         }
@@ -3062,10 +3508,26 @@ function isApprovalIntent(message) {
           }
         }
 
+        const generatedPath = path.join(outputDir, 'index.html');
+        if (bp.generationMode === 'opencode-html' && fs.existsSync(generatedPath)) {
+          const fullHtml = fs.readFileSync(generatedPath, 'utf8');
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            mode: 'built',
+            slug,
+            selectedThemeKey: bp.selectedThemeKey || DEFAULT_THEME_KEY,
+            previewUrl: `/generated/${slug}/index.html?t=${Date.now()}`,
+            html: fullHtml,
+            projectName: bp.projectName,
+            reply: `The OpenCode generated page for **${bp.projectName}** is already live.`
+          }));
+          return;
+        }
+
         // Build full 20-section production HTML
         let fullHtml = generatorTemplate.buildFullLandingPage(bp);
         fullHtml = inlineUploadImages(fullHtml, PUBLIC_DIR);
-        const generatedPath = path.join(outputDir, 'index.html');
         fs.writeFileSync(generatedPath, fullHtml, 'utf8');
 
         // Build and save dedicated Privacy Policy page
@@ -3130,9 +3592,24 @@ function isApprovalIntent(message) {
         fs.writeFileSync(bpPath, JSON.stringify(bp, null, 2), 'utf8');
 
         if (payload.recompile !== false) {
-          let fullHtml = generatorTemplate.buildFullLandingPage(bp);
-          fullHtml = inlineUploadImages(fullHtml, PUBLIC_DIR);
-          fs.writeFileSync(path.join(outputDir, 'index.html'), fullHtml, 'utf8');
+          const generatedPath = path.join(outputDir, 'index.html');
+          if (bp.generationMode === 'opencode-html' && fs.existsSync(generatedPath)) {
+            const stagingPath = path.join(outputDir, 'index.opencode-staging.html');
+            const fullHtml = await generateLandingPageWithOpenCode({
+              projectName: bp.projectName,
+              projectFacts: sanitizeDashboardFacts({ ...payload.images, projectName: bp.projectName }),
+              designBrief: bp.designBrief || '',
+              request: 'Update the existing page image sources to match the supplied Image CMS slot URLs. Preserve its layout, text, palette, and behavior.',
+              sourcePath: generatedPath,
+              stagingPath
+            });
+            fs.copyFileSync(stagingPath, generatedPath);
+            fs.unlinkSync(stagingPath);
+          } else {
+            let fullHtml = generatorTemplate.buildFullLandingPage(bp);
+            fullHtml = inlineUploadImages(fullHtml, PUBLIC_DIR);
+            fs.writeFileSync(generatedPath, fullHtml, 'utf8');
+          }
         }
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -3195,8 +3672,20 @@ function isApprovalIntent(message) {
       try {
         const payload = JSON.parse(body || '{}');
         const userMessage = String(payload.message || '').trim();
-        let projectName = String(payload.projectName || payload.slug || 'Prestige Parklane');
+        const generationEngine = String(payload.generationEngine || 'opencode').toLowerCase() === 'gemini' ? 'gemini' : 'opencode';
+        let projectName = String(payload.intakeData?.projectName || payload.projectName || payload.slug || 'Prestige Parklane');
         let slug = String(payload.slug || projectName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'prestige-parklane';
+        const isDesignBrief = isFullPageDesignPrompt(userMessage);
+        if (generationEngine === 'gemini' && !isDesignBrief) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'Gemini generation is for new full-page design briefs. Switch to OpenCode for chat edits and quick changes.' }));
+          return;
+        }
+        const briefProjectFacts = isDesignBrief ? extractSelfContainedBriefProjectFacts(userMessage) : null;
+        if (briefProjectFacts) {
+          projectName = briefProjectFacts.projectName;
+          slug = projectName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'new-project';
+        }
 
         // Check if user is submitting a NEW property brief rather than an edit to the current project
         const isExplicitNewProperty = /(?:\b(?:create|start|build|make|generate)\b.*?\b(?:landing\s+page|project|residence|township|property|listing)\b)/i.test(userMessage) ||
@@ -3213,7 +3702,34 @@ function isApprovalIntent(message) {
         let bp;
         let isAlreadyBuilt = false;
 
-        if (isNewPropertySubmission) {
+        if (isDesignBrief) {
+          console.log(`[Chat API] Detected full-page design brief for "${projectName}". Using the connected OpenCode TUI.`);
+          if (briefProjectFacts) {
+            bp = {
+              ...briefProjectFacts,
+              slug,
+              status: 'draft',
+              updatedAt: new Date().toISOString()
+            };
+          } else {
+            bp = getOrInitBlueprint(slug, projectName, payload.intakeData);
+            const locationConflict = findDashboardLocationConflict(userMessage, {
+              ...payload.intakeData,
+              ...bp
+            });
+            if (locationConflict) {
+              const requestedLocation = resolveDesignBriefLocation(userMessage, '');
+              const assistantReply = `I couldn't safely generate this page: the prompt asks for ${requestedLocation}, but the dashboard still contains ${locationConflict}. Update the project's location-specific facts, map, RERA, contact, and images to match ${requestedLocation}, then submit again. The live page was left unchanged.`;
+              res.writeHead(409, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: false, error: assistantReply, code: 'PROJECT_LOCATION_CONFLICT' }));
+              return;
+            }
+            bp.projectName = projectName;
+            bp.developerName = payload.intakeData?.developerName || bp.developerName;
+            bp.location = resolveDesignBriefLocation(userMessage, payload.intakeData?.location || bp.location);
+          }
+          isAlreadyBuilt = false;
+        } else if (isNewPropertySubmission) {
           console.log(`[Chat API] Detected NEW property submission in chat message! Synthesizing fresh project...`);
           const freshBp = extractFreshBlueprintFromText(userMessage, slug);
           slug = freshBp.slug;
@@ -3291,7 +3807,9 @@ function isApprovalIntent(message) {
         }
 
         // Ingest custom / uploaded images from Studio sidebar and form inputs
-        if (payload.intakeData) {
+        // A named self-contained brief owns its project identity and assets.
+        // Do not fill missing brief media from the currently selected dashboard project.
+        if (payload.intakeData && !briefProjectFacts) {
           const intake = payload.intakeData;
           const isCustom = (url) => url && typeof url === 'string' && !url.includes('prestige-constructions') && !url.includes('prestige-parklane');
           
@@ -3324,10 +3842,108 @@ function isApprovalIntent(message) {
           }
         }
 
+        if (isDesignBrief) {
+          const projectFacts = sanitizeDashboardFacts(briefProjectFacts
+            ? {
+                ...briefProjectFacts,
+                uploadedImages: uploadedImages.map(({ name, type, url }) => ({ name, type, url }))
+              }
+            : {
+                ...payload.intakeData,
+                projectName: payload.intakeData?.projectName || projectName,
+                developerName: payload.intakeData?.developerName || bp.developerName,
+                location: bp.location || payload.intakeData?.location,
+                uploadedImages: uploadedImages.map(({ name, type, url }) => ({ name, type, url }))
+              });
+          const stagingName = generationEngine === 'gemini' ? 'index.gemini-staging.html' : 'index.opencode-staging.html';
+          const stagingPath = path.join(outputDir, stagingName);
+          const generationOptions = {
+            projectName,
+            projectFacts,
+            projectFactsSource: briefProjectFacts ? 'brief' : 'dashboard',
+            designBrief: userMessage,
+            request: 'Create the complete page from the design brief. Treat examples and placeholder labels as guidance, not project facts.',
+            stagingPath
+          };
+          const cfg = generationEngine === 'gemini' ? getConfig() : null;
+          const html = generationEngine === 'gemini'
+            ? await generateLandingPageWithGemini({
+                ...generationOptions,
+                apiKey: String(payload.intakeData?.apiKey || cfg.apiKey || process.env.GEMINI_API_KEY || '').trim(),
+                preferredModel: payload.intakeData?.geminiModel || cfg.geminiModel
+              })
+            : await generateLandingPageWithOpenCode(generationOptions);
+
+          fs.copyFileSync(stagingPath, generatedPath);
+          fs.unlinkSync(stagingPath);
+          bp.status = 'built';
+          bp.generationMode = `${generationEngine}-html`;
+          bp.projectFactsSource = briefProjectFacts ? 'brief' : 'dashboard';
+          bp.designBrief = userMessage;
+          bp.updatedAt = new Date().toISOString();
+          fs.writeFileSync(bpPath, JSON.stringify(bp, null, 2), 'utf8');
+
+          registerOrUpdateSite({
+            site_id: slug,
+            project_name: projectName,
+            developer_name: bp.developerName,
+            live_url: `/generated/${slug}/index.html`,
+            preview_url: `/generated/${slug}/index.html`,
+            status: 'live'
+          });
+
+          const factsSourceLabel = briefProjectFacts?.projectStatus
+            ? 'the fictional concept details in your brief'
+            : briefProjectFacts ? 'the complete project facts in your brief' : 'the dashboard facts';
+          const engineLabel = generationEngine === 'gemini' ? 'Gemini API' : 'OpenCode';
+          const assistantReply = `The landing page for **${projectName}** is ready. I used ${factsSourceLabel}, your design brief, and the LandingPageAgent skill with ${engineLabel}.`;
+          history.push({ role: 'user', content: userMessage, attachments: rawAttachments, timestamp: Date.now() });
+          history.push({ role: 'assistant', content: assistantReply, timestamp: Date.now() });
+          fs.writeFileSync(histPath, JSON.stringify(history, null, 2), 'utf8');
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            mode: 'built',
+            slug,
+            projectName,
+            previewUrl: `/generated/${slug}/index.html?t=${Date.now()}`,
+            reply: assistantReply,
+            fileSize: html.length,
+            history,
+            html,
+            blueprint: bp
+          }));
+          return;
+        }
+
         // ============================================
         // CHECK IF USER IS APPROVING TO BUILD THE PAGE
         // ============================================
         const userWantsBuild = payload.action === 'build' || isApprovalIntent(userMessage);
+
+        if (userWantsBuild && isAlreadyBuilt && ['opencode-html', 'gemini-html'].includes(bp.generationMode)) {
+          const generationLabel = bp.generationMode === 'gemini-html' ? 'Gemini generated' : 'OpenCode generated';
+          const assistantReply = `**${bp.projectName}** is already built and live. Your ${generationLabel} page is still active.`;
+          history.push({ role: 'user', content: userMessage, attachments: rawAttachments, timestamp: Date.now() });
+          history.push({ role: 'assistant', content: assistantReply, timestamp: Date.now() });
+          fs.writeFileSync(histPath, JSON.stringify(history, null, 2), 'utf8');
+          const html = fs.readFileSync(generatedPath, 'utf8');
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            mode: 'built',
+            slug,
+            projectName: bp.projectName,
+            previewUrl: `/generated/${slug}/index.html?t=${Date.now()}`,
+            reply: assistantReply,
+            fileSize: html.length,
+            history,
+            html,
+            blueprint: bp
+          }));
+          return;
+        }
 
         if (userWantsBuild) {
           console.log(`[Chat API] User approved blueprint for "${slug}". Building 20-section landing page...`);
@@ -3380,6 +3996,61 @@ function isApprovalIntent(message) {
         }
 
         const userWantsExplicitBlueprint = /^(?:view|show|display|see|reset)\s+(?:content\s+)?blueprint\b/i.test(userMessage);
+
+        if (isAlreadyBuilt && ['opencode-html', 'gemini-html'].includes(bp.generationMode) && !userWantsExplicitBlueprint) {
+          const savedBriefFacts = bp.projectFactsSource === 'brief'
+            ? extractSelfContainedBriefProjectFacts(bp.designBrief)
+            : null;
+          const projectFacts = sanitizeDashboardFacts(savedBriefFacts || {
+            ...payload.intakeData,
+            projectName: payload.intakeData?.projectName || bp.projectName,
+            developerName: payload.intakeData?.developerName || bp.developerName,
+            location: bp.location || payload.intakeData?.location
+          });
+          const stagingPath = path.join(outputDir, 'index.opencode-staging.html');
+          const html = await generateLandingPageWithOpenCode({
+            projectName: bp.projectName,
+            projectFacts,
+            projectFactsSource: savedBriefFacts ? 'brief' : 'dashboard',
+            designBrief: bp.designBrief || userMessage,
+            request: userMessage,
+            sourcePath: generatedPath,
+            stagingPath
+          });
+
+          fs.copyFileSync(stagingPath, generatedPath);
+          fs.unlinkSync(stagingPath);
+          bp.updatedAt = new Date().toISOString();
+          fs.writeFileSync(bpPath, JSON.stringify(bp, null, 2), 'utf8');
+          registerOrUpdateSite({
+            site_id: slug,
+            project_name: bp.projectName,
+            developer_name: bp.developerName,
+            live_url: `/generated/${slug}/index.html`,
+            preview_url: `/generated/${slug}/index.html`,
+            status: 'live'
+          });
+
+          const assistantReply = `Updated **${bp.projectName}** in the connected OpenCode session while preserving its original design brief and palette.`;
+          history.push({ role: 'user', content: userMessage, attachments: rawAttachments, timestamp: Date.now() });
+          history.push({ role: 'assistant', content: assistantReply, summary: assistantReply, timestamp: Date.now() });
+          fs.writeFileSync(histPath, JSON.stringify(history, null, 2), 'utf8');
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            mode: 'built',
+            slug,
+            projectName: bp.projectName,
+            previewUrl: `/generated/${slug}/index.html?t=${Date.now()}`,
+            reply: assistantReply,
+            fileSize: html.length,
+            history,
+            html,
+            blueprint: bp
+          }));
+          return;
+        }
 
         // ========================================================
         // STAGE 2: LIVE PAGE IN-PLACE EDITING (CLAUDE / CODEX STYLE)

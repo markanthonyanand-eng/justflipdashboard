@@ -300,6 +300,21 @@
 
               <!-- Chat Input Box -->
               <div class="p-4 border-t border-surface-container bg-surface-container-low">
+                <div class="flex items-center gap-2 mb-2 text-[11px]">
+                  <span class="font-semibold text-on-surface-variant">New full-page generation:</span>
+                  <button type="button" id="chat-engine-opencode" onclick="selectChatGenerationEngine('opencode')" class="px-2.5 py-1 rounded-lg bg-violet-700 text-white font-bold">OpenCode</button>
+                  <button type="button" id="chat-engine-gemini" onclick="selectChatGenerationEngine('gemini')" class="px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface-variant font-semibold">Gemini API</button>
+                  <span id="chat-engine-hint" class="text-on-surface-variant">Uses the connected OpenCode session.</span>
+                </div>
+                <div class="mb-2 p-2.5 rounded-xl border border-amber-500/25 bg-amber-500/5">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <label for="chat-gemini-key" class="text-[11px] font-bold text-primary">Gemini API key</label>
+                    <input id="chat-gemini-key" type="password" autocomplete="off" placeholder="Paste key (AIzaSy...)" class="min-w-[180px] flex-1 bg-surface-container-lowest border border-surface-container text-primary text-xs px-3 py-2 rounded-lg font-mono outline-none focus:border-amber-500"/>
+                    <button type="button" onclick="connectQuickGeminiKey('chat-gemini-key','chat-gemini-feedback')" class="px-3 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold">Connect &amp; test</button>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-[10px] text-secondary font-bold hover:underline">Get a key</a>
+                  </div>
+                  <div id="chat-gemini-feedback" class="mt-1 text-[11px] leading-tight min-h-[16px]" role="status" aria-live="polite"></div>
+                </div>
                 <!-- Attachments tray -->
                 <div id="ai-chat-attachments" class="flex flex-wrap gap-2 mb-2"></div>
                 
@@ -5483,6 +5498,23 @@ if (document.readyState === 'loading') {
     let currentLiveUrl = '';
     const aiChatAttachments = [];
     const aiChatHistory = [];
+    let chatGenerationEngine = 'opencode';
+
+    function selectChatGenerationEngine(engine) {
+      chatGenerationEngine = engine === 'gemini' ? 'gemini' : 'opencode';
+      const opencodeButton = document.getElementById('chat-engine-opencode');
+      const geminiButton = document.getElementById('chat-engine-gemini');
+      const hint = document.getElementById('chat-engine-hint');
+      const selectedClass = chatGenerationEngine === 'gemini'
+        ? 'px-2.5 py-1 rounded-lg bg-amber-600 text-white font-bold'
+        : 'px-2.5 py-1 rounded-lg bg-violet-700 text-white font-bold';
+      const idleClass = 'px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface-variant font-semibold';
+      if (opencodeButton) opencodeButton.className = chatGenerationEngine === 'opencode' ? selectedClass : idleClass;
+      if (geminiButton) geminiButton.className = chatGenerationEngine === 'gemini' ? selectedClass : idleClass;
+      if (hint) hint.textContent = chatGenerationEngine === 'gemini'
+        ? 'Uses your connected Gemini API key. Full-page briefs only.'
+        : 'Uses the connected OpenCode session.';
+    }
 
     function formatMessageContent(content) {
       if (!content) return '';
@@ -5947,7 +5979,7 @@ if (document.readyState === 'loading') {
         sendButton.disabled = true;
         sendButton.innerHTML = '<span class="animate-spin material-symbols-outlined text-[16px]">autorenew</span> Processing...';
       }
-      if (status) status.textContent = 'Processing request with OpenCode...';
+      if (status) status.textContent = `Processing request with ${chatGenerationEngine === 'gemini' ? 'Gemini API' : 'OpenCode'}...`;
       const loaderBubble = addAiChatMessage('', 'assistant', { isLoading: true, id: 'chat-loading-bubble' });
 
       try {
@@ -5964,6 +5996,7 @@ if (document.readyState === 'loading') {
             slug,
             chatHistory: aiChatHistory,
             intakeData,
+            generationEngine: chatGenerationEngine,
             attachments: currentAttachments
           })
         });
@@ -6008,7 +6041,13 @@ if (document.readyState === 'loading') {
         setTimeout(() => { if (status) status.textContent = ''; }, 4000);
       } catch (err) {
         if (loaderBubble && typeof loaderBubble.remove === 'function') loaderBubble.remove();
-        addAiChatMessage(`⚠️ Update issue: ${err.message}. Retrying or saving fallback...`, 'assistant');
+        const updateMessage = String(err.message || 'Unknown error');
+        const recoveryHint = /OpenCode finished without creating|OpenCode accepted a repair request but did not resume/i.test(updateMessage)
+          ? 'OpenCode ended without creating the staging file. Check that its build agent has file-writing tools enabled; the live page was not replaced.'
+          : /Connected OpenCode TUI did not finish|OpenCode|timeout|aborted/i.test(updateMessage)
+          ? 'OpenCode may still be working in its terminal. Check that session before retrying; the live page was not replaced.'
+          : 'The current live page was not replaced.';
+        addAiChatMessage(`⚠️ Update issue: ${updateMessage}. ${recoveryHint}`, 'assistant');
         if (status) status.textContent = 'Error occurred.';
       } finally {
         if (sendButton) {
@@ -6258,9 +6297,9 @@ if (document.readyState === 'loading') {
       }
     }
 
-    async function connectQuickGeminiKey() {
-      const inputEl = document.getElementById('quick-gemini-key');
-      const feedbackEl = document.getElementById('quick-gemini-feedback');
+    async function connectQuickGeminiKey(inputId = 'quick-gemini-key', feedbackId = 'quick-gemini-feedback') {
+      const inputEl = document.getElementById(inputId);
+      const feedbackEl = document.getElementById(feedbackId);
       const key = (inputEl ? inputEl.value : '').trim();
 
       if (!key) {
@@ -6290,6 +6329,8 @@ if (document.readyState === 'loading') {
             }
             checkEngineSettings();
             return;
+          } else if (data.code === 'GEMINI_NETWORK_ERROR') {
+            if (feedbackEl) feedbackEl.innerHTML = '<span class="text-amber-700 font-semibold">The dashboard server could not reach Google. Trying a direct browser connection…</span>';
           } else {
             if (feedbackEl) feedbackEl.innerHTML = `<span class="text-rose-600 font-bold">❌ ${escapeHtml(data.message)}</span>`;
             return;
@@ -6305,10 +6346,10 @@ if (document.readyState === 'loading') {
       let errMsg = '';
       for (const m of candidateModels) {
         try {
-          const probeUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(key)}`;
+          const probeUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`;
           const res = await fetch(probeUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
             body: JSON.stringify({ contents: [{ parts: [{ text: 'Respond with: PONG' }] }] })
           });
           if (res.ok) {
@@ -7318,7 +7359,7 @@ Doctors For You Devanahalli Hospital: 15 min · 9.8 km`;
     async function browserSynthesizeWithGemini(payload) {
       const apiKey = payload.apiKey;
       const model = payload.geminiModel || localStorage.getItem('justflip_gemini_model') || 'gemini-2.5-flash';
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
       
       const systemPrompt = `You are LandingPageAgent: Master real estate copywriter. Given property details, synthesize luxury marketing copy in valid JSON:
 {
@@ -7347,7 +7388,7 @@ Doctors For You Devanahalli Hospital: 15 min · 9.8 km`;
 
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: "user", parts: [{ text: userText }] }],
@@ -8008,10 +8049,10 @@ Size: ${sizeKb} KB (Well under 2MB limit ✅)`);
 
       for (const m of candidateModels) {
         try {
-          const probeUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(apiKey)}`;
+          const probeUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`;
           const res = await fetch(probeUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
             body: JSON.stringify({ contents: [{ parts: [{ text: 'Respond with: PONG' }] }] })
           });
           if (res.ok) {

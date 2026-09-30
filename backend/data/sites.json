@@ -1,5 +1,25 @@
 [
   {
+    "site_id": "aurelia-house",
+    "project_name": "AURELIA House",
+    "developer_name": "Aurelia Living",
+    "live_url": "/generated/aurelia-house/index.html",
+    "preview_url": "/generated/aurelia-house/index.html",
+    "status": "live",
+    "created_at": "2026-09-30T10:09:12.698Z",
+    "updated_at": "2026-09-30T10:09:12.698Z"
+  },
+  {
+    "site_id": "powerful-luxury-headline",
+    "project_name": "powerful luxury headline",
+    "developer_name": "website while using the research patterns bel",
+    "live_url": "/generated/powerful-luxury-headline/index.html",
+    "preview_url": "/generated/powerful-luxury-headline/index.html",
+    "status": "live",
+    "created_at": "2026-09-30T04:19:22.642Z",
+    "updated_at": "2026-09-30T04:33:36.285Z"
+  },
+  {
     "site_id": "grasslands-lakeside",
     "project_name": "Grasslands Lakeside",
     "developer_name": "Grasslands Developers",
@@ -7,7 +27,7 @@
     "preview_url": "/generated/grasslands-lakeside/index.html",
     "status": "live",
     "created_at": "2026-09-29T06:26:44.806Z",
-    "updated_at": "2026-09-29T06:46:37.123Z"
+    "updated_at": "2026-09-30T08:49:54.468Z"
   },
   {
     "site_id": "rohan-marina-one",
@@ -46,7 +66,7 @@
     "preview_url": "/generated/prestige-parklane/index.html",
     "status": "live",
     "created_at": "2026-09-28T11:13:52.710Z",
-    "updated_at": "2026-09-28T11:13:52.710Z"
+    "updated_at": "2026-09-30T06:06:23.274Z"
   },
   {
     "site_id": "land-trades-shivabagh",
@@ -61,12 +81,12 @@
   {
     "site_id": "luxury-residences",
     "project_name": "Luxury Residences",
-    "developer_name": "Premier Developer",
+    "developer_name": "section, and all other imagery requirements,",
     "live_url": "/generated/luxury-residences/index.html",
     "preview_url": "/generated/luxury-residences/index.html",
     "status": "live",
     "created_at": "2026-09-28T09:49:45.669Z",
-    "updated_at": "2026-09-29T06:44:50.914Z"
+    "updated_at": "2026-09-30T09:24:33.384Z"
   },
   {
     "site_id": "dlf-one-midtown",

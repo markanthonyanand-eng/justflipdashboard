@@ -1,19 +1,19 @@
 {
   "slug": "luxury-residences",
   "projectName": "Luxury Residences",
-  "developerName": "Premier Developer",
+  "developerName": "section, and all other imagery requirements,",
   "location": "New Delhi",
-  "selectedThemeKey": "coastal-azure",
-  "brandTheme": "coastal-azure",
+  "selectedThemeKey": "emerald-gold",
+  "brandTheme": "emerald-gold",
   "theme": {
-    "primaryColor": "#082F49",
-    "secondaryColor": "#0C4A6E",
-    "accentColor": "#38BDF8",
-    "backgroundColor": "#F0F9FF",
-    "textColor": "#0F172A",
-    "surfaceColor": "#E0F2FE"
+    "primaryColor": "#123D32",
+    "secondaryColor": "#B89555",
+    "accentColor": "#D7BC7A",
+    "backgroundColor": "#F6F5EF",
+    "textColor": "#17251F",
+    "surfaceColor": "#FFFFFF"
   },
-  "fontStyle": "playfair-montserrat",
+  "fontStyle": "inter",
   "price": "Price on Request*",
   "startingPrice": "Price on Request*",
   "price1bhk": "Price on Request*",
@@ -102,24 +102,70 @@
     }
   ],
   "status": "built",
-  "updatedAt": "2026-09-29T06:44:50.864Z",
+  "updatedAt": "2026-09-30T09:24:33.381Z",
+  "heroImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
   "galleryImages": [
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200",
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200"
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-evening.jpg"
   ],
-  "heroImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
   "overviewImages": [
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200"
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+    "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg"
   ],
-  "gal1": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
-  "brochureImage1": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
-  "gal2": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
-  "brochureImage2": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200",
-  "gal3": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200",
-  "floorPlanImages": [
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200"
+  "brochureImage1": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/brochure-cover.jpg",
+  "brochureImage2": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/brochure-plans-cover.jpg",
+  "brochureImage3": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg",
+  "locationMapImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/location-map.jpg",
+  "greenBannerImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+  "tourBackgroundImage": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+  "gal1": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg",
+  "gal2": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/hero-elevation.jpg",
+  "gal3": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg",
+  "gal4": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg",
+  "gal5": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg",
+  "gal6": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-evening.jpg",
+  "lifeAtImages": [
+    {
+      "title": "The Grand Clubhouse",
+      "cat": "Wellness & Social",
+      "desc": "A ~34,500 sq ft double-height private social sanctum with temperature-controlled indoor pool and lounge.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-dusk.jpg"
+    },
+    {
+      "title": "Olympic-Length Swimming Pool",
+      "cat": "Waterfront Living",
+      "desc": "Resort-grade infinity swimming pool flanked by palm trees, sun decks, and submerged loungers.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-fountain.jpg"
+    },
+    {
+      "title": "Botanical Central Boulevard",
+      "cat": "Biophilic Greens",
+      "desc": "Over 75% curated open biophilic spaces, tranquil walking paths, reflexology trails, and meditation nooks.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/towers-garden.jpg"
+    },
+    {
+      "title": "World-Class Sports Arenas",
+      "cat": "Active Fitness",
+      "desc": "Full-sized floodlit tennis courts, squash courts, multi-sport turf, and dedicated jogging circuits.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg"
+    },
+    {
+      "title": "Sunken Poolside Cabana Bar",
+      "cat": "Evening Leisure",
+      "desc": "Evening illumination overlooking tranquil water bodies, fountain plazas, and private party decks.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/pool-evening.jpg"
+    },
+    {
+      "title": "Kids Adventure Play Grove",
+      "cat": "Family & Recreation",
+      "desc": "Zero-vehicular movement kids adventure play park with soft-fall surfaces, sandpits, and treehouse.",
+      "img": "https://prestige-constructions.co.in/prestige-parklane-bangalore/img/garden-walk.jpg"
+    }
   ]
 }
